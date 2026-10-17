@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b3b8f">
+  <meta name="description" content="3Z Business World — jeu de simulation économique virtuelle.">
+  <title>3Z Business World</title>
+  <style>
+    :root{--blue:#0b3b8f;--blue2:#1769d2;--pale:#edf5ff;--ink:#14233b;--muted:#61718a;--white:#fff;--line:#d8e4f4;--green:#087f5b}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f5f8fd;color:var(--ink)}
+    header{background:linear-gradient(135deg,#082b68,#1769d2);color:#fff;padding:18px 5vw 54px}
+    .nav{max-width:1120px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
+    .logo{width:48px;height:48px;border-radius:14px;background:#fff;color:var(--blue);display:grid;place-items:center;font-size:20px;font-weight:950;box-shadow:0 6px 20px #001a4a55}
+    nav{display:flex;gap:8px;flex-wrap:wrap} nav a{color:white;text-decoration:none;padding:9px 12px;border-radius:9px;font-size:14px} nav a:hover{background:#ffffff22}
+    .hero{max-width:1120px;margin:42px auto 0;display:grid;grid-template-columns:1.3fr .7fr;gap:26px;align-items:center}
+    .eyebrow{color:#cfe2ff;text-transform:uppercase;letter-spacing:2px;font-size:12px;font-weight:800}
+    h1{font-size:clamp(34px,5vw,58px);line-height:1.04;margin:12px 0 18px;letter-spacing:-1.6px}
+    .hero p{max-width:650px;color:#e4eeff;line-height:1.7}
+    .hero-card{background:#ffffff12;border:1px solid #ffffff35;border-radius:22px;padding:24px;backdrop-filter:blur(8px)}
+    .hero-card .big{font-size:34px;font-weight:850;margin:8px 0}.hero-card small{color:#d6e6ff}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:11px;padding:12px 17px;background:var(--blue2);color:white;font-weight:750;text-decoration:none;cursor:pointer}
+    .btn.white{background:#fff;color:var(--blue)} .btn.ghost{background:var(--pale);color:var(--blue)} .btn:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #ffcf4a;outline-offset:3px}
+    main{max-width:1120px;margin:-26px auto 0;padding:0 20px 48px}
+    .notice{background:#fff3cd;border:1px solid #f3d98b;color:#654d00;padding:13px 16px;border-radius:12px;font-size:13px;line-height:1.5;margin-bottom:20px}
+    .section-title{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin:32px 0 16px}
+    h2{margin:0;font-size:25px} .muted{color:var(--muted);font-size:14px;line-height:1.6}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .card{background:white;border:1px solid var(--line);border-radius:17px;padding:20px;box-shadow:0 5px 18px #0c2d5c08}
+    .icon{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:var(--pale);font-size:22px;margin-bottom:12px}
+    .card h3{margin:0 0 8px;font-size:17px}.card p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+    .dashboard{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .balance{background:linear-gradient(135deg,#0b3b8f,#1769d2);color:#fff;border-radius:19px;padding:23px}
+    .balance .amount{font-size:clamp(27px,4vw,38px);font-weight:850;margin:10px 0}
+    .balance p{color:#dbeaff;font-size:13px;margin-bottom:0}
+    .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+    .actions button{width:100%}.activity{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}.activity:last-child{border-bottom:0}
+    .tag{font-size:11px;font-weight:800;color:var(--green);background:#e3f7ef;padding:5px 8px;border-radius:999px}
+    .form-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.form-row input{min-width:0;flex:1;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit}
+    footer{background:#071f4b;color:#c9d9f4;padding:28px 20px;text-align:center;font-size:13px;line-height:1.7}
+    .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#14233b;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 28px #0003;max-width:calc(100vw - 30px);font-size:14px;display:none;z-index:10}
+    @media(max-width:760px){.hero{grid-template-columns:1fr;margin-top:30px}.hero-card{max-width:500px}.grid{grid-template-columns:1fr}.dashboard{grid-template-columns:1fr}header{padding-bottom:45px}main{padding-left:14px;padding-right:14px}.nav{align-items:flex-start}nav{width:100%}nav a{padding:8px 9px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand"><div class="logo">3Z</div><div>3Z Business World<div style="font-size:11px;font-weight:500;color:#cfe2ff">Le monde des affaires virtuelles</div></div></div>
+    <nav aria-label="Navigation principale">
+      <a href="#fonctionnalites">Fonctionnalités</a><a href="#tableau">Démo du jeu</a><a href="#apropos">À propos</a>
+    </nav>
+  </div>
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Construis ton empire virtuel</div>
+      <h1>Travaille. Investis.<br>Développe ton monde.</h1>
+      <p>Découvre 3Z Business World, un projet de jeu de simulation économique où tu pourras gérer des activités, développer des entreprises et apprendre à prendre des décisions financières — avec de l’argent virtuel.</p>
+      <a class="btn white" href="#tableau">Découvrir la démo</a>
+      <a class="btn" href="#fonctionnalites" style="margin-left:7px">Explorer le jeu</a>
+    </div>
+    <div class="hero-card">
+      <small>Capital de départ prévu</small>
+      <div class="big">250 000 €</div>
+      <div>Argent virtuel pour chaque nouveau joueur</div>
+      <hr style="border:0;border-top:1px solid #ffffff35;margin:20px 0">
+      <small>Ton objectif</small><div style="font-size:20px;font-weight:800;margin-top:6px">Bâtir ton empire économique</div>
+    </div>
+  </section>
+</header>
+<main>
+  <div class="notice"><strong>Prototype de démonstration :</strong> les soldes et boutons ci-dessous sont simulés uniquement dans ce navigateur. Il n’y a pas encore de vrais comptes, de serveur, de chat ni de transactions sécurisées. L’argent affiché n’a aucune valeur réelle.</div>
+  <section id="fonctionnalites">
+    <div class="section-title"><div><h2>Un monde à développer</h2><div class="muted">Les grandes fonctionnalités prévues pour 3Z Business World.</div></div></div>
+    <div class="grid">
+      <article class="card"><div class="icon">🏢</div><h3>Entreprises et emplois</h3><p>Crée des entreprises virtuelles, travaille, gagne un salaire et fais grandir ton activité.</p></article>
+      <article class="card"><div class="icon">🌱</div><h3>Agriculture et élevage</h3><p>Produis des récoltes, élèves des animaux et vends tes marchandises sur le marché virtuel.</p></article>
+      <article class="card"><div class="icon">🏦</div><h3>Banque et épargne</h3><p>Gère ton argent virtuel. Le projet prévoit une épargne rémunérée à 5 % par semaine.</p></article>
+      <article class="card"><div class="icon">🤝</div><h3>Prêts bancaires</h3><p>La banque pourra accorder des prêts à un taux total prévu de 10 % par prêt. Aucun prêt entre joueurs.</p></article>
+      <article class="card"><div class="icon">🌍</div><h3>Communauté internationale</h3><p>Des espaces de discussion en français et internationaux, avec traduction prévue à terme.</p></article>
+      <article class="card"><div class="icon">🏆</div><h3>Missions et classements</h3><p>Accomplis des missions, progresse en niveau et compare tes résultats avec les autres joueurs.</p></article>
+    </div>
+  </section>
+  <section id="tableau">
+    <div class="section-title"><div><h2>Tableau de bord de démonstration</h2><div class="muted">Essaie les boutons : cette simulation est enregistrée sur cet appareil seulement.</div></div><span class="tag">MODE DÉMO</span></div>
+    <div class="dashboard">
+      <div class="balance">
+        <div style="font-size:13px;color:#dbeaff">Solde du joueur de démonstration</div>
+        <div class="amount" id="balance">250 000 €</div>
+        <div>Profil : Joueur débutant</div>
+        <p>Monnaie virtuelle — aucun retrait ni paiement réel possible.</p>
+        <div class="actions">
+          <button class="btn white" onclick="work()">Travailler +500 €</button>
+          <button class="btn white" onclick="mission()">Mission +1 000 €</button>
+          <button class="btn white" onclick="deposit()">Épargner 5 000 €</button>
+          <button class="btn white" onclick="resetDemo()">Réinitialiser</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Historique des activités</h3>
+        <p class="muted">Les opérations de cette démo s’affichent ici.</p>
+        <div id="history"><div class="activity"><span>Création du profil démo</span><strong>+250 000 €</strong></div></div>
+      </div>
+    </div>
+  </section>
+  <section id="apropos">
+    <div class="section-title"><div><h2>Rejoindre le projet</h2><div class="muted">Inscris ton nom dans cette liste locale de démonstration. Ce formulaire n’envoie aucune donnée en ligne.</div></div></div>
+    <div class="card">
+      <h3>Liste d’intérêt</h3>
+      <p class="muted">Entre un prénom ou un pseudo pour voir comment le formulaire peut fonctionner. Pour recueillir réellement les inscriptions, il faudra connecter une base de données sécurisée.</p>
+      <form class="form-row" onsubmit="join(event)">
+        <input id="nickname" maxlength="40" placeholder="Ton prénom ou pseudo" aria-label="Ton prénom ou pseudo" required>
+        <button class="btn" type="submit">Tester l’inscription</button>
+      </form>
+      <p id="joinResult" class="muted" aria-live="polite"></p>
+    </div>
+  </section>
+</main>
+<footer>
+  <strong style="color:white">3Z Business World</strong><br>
+  Un projet de simulation économique virtuelle • Bleu & blanc • 3Z<br>
+  Démo non connectée — les fonctions multijoueurs et la sauvegarde en ligne restent à développer.
+</footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+  const initialBalance = 250000;
+  let balance = initialBalance;
+  let savings = 0;
+  function euro(n){return new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(n)+' €';}
+  function render(){document.getElementById('balance').textContent=euro(balance);}
+  function log(label, amount){
+    const item=document.createElement('div'); item.className='activity';
+    const left=document.createElement('span'); left.textContent=label;
+    const right=document.createElement('strong'); right.textContent=(amount>=0?'+':'−')+' '+euro(Math.abs(amount));
+    item.append(left,right); document.getElementById('history').prepend(item);
+  }
+  function toast(message){const el=document.getElementById('toast');el.textContent=message;el.style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.style.display='none',2800);}
+  function work(){balance+=500;render();log('Travail virtuel',500);toast('Bravo ! Tu as gagné 500 € virtuels.');}
+  function mission(){balance+=1000;render();log('Mission terminée',1000);toast('Mission de démonstration terminée : +1 000 € virtuels.');}
+  function deposit(){if(balance<5000){toast('Solde insuffisant pour cette opération.');return;}balance-=5000;savings+=5000;render();log('Versement en épargne (démo)',-5000);toast('5 000 € virtuels transférés vers une épargne simulée. Épargne démo : '+euro(savings)+'.');}
+  function resetDemo(){balance=initialBalance;savings=0;render();document.getElementById('history').innerHTML='<div class="activity"><span>Création du profil démo</span><strong>+250 000 €</strong></div>';toast('Démo réinitialisée.');}
+  function join(event){event.preventDefault();const name=document.getElementById('nickname').value.trim();if(!name)return;document.getElementById('joinResult').textContent='Bienvenue, '+name+' ! Ceci est un test local : ton inscription n’a pas été envoyée ni sauvegardée en ligne.';toast('Formulaire de démonstration testé.');}
+</script>
+</body>
+</html>
